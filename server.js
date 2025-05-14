@@ -1,12 +1,14 @@
 const express = require("express");
-// const cors = require("cors");
-const data = require("./dataclea");
+const data = require("./data");
+const cors = require("cors");
+const connectDB = require("./frontend/config/db")
+
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
-// app.use(cors());
 app.use(express.json());
+connectDB();
 
 //endPoint
 app.get("/professional", (req, res) =>{
