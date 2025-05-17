@@ -11,10 +11,6 @@ app.use(cors());
 app.use(express.json());
 connectDB();
 
-//endPoint
-// app.get("/professional", (req, res) =>{
-//     res.json(data);
-// });
 
 app.use("/contacts", contactRoutes);
 
