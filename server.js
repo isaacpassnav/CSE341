@@ -11,9 +11,12 @@ app.use(express.json());
 connectDB();
 
 //endPoint
-app.get("/professional", (req, res) =>{
-    res.json(data);
-});
+// app.get("/professional", (req, res) =>{
+//     res.json(data);
+// });
+const contactRoutes = require("./frontend/routers/routerContacts");
+app.use("/contacts", contactRoutes);
+
 
 app.listen(PORT, () =>{
     console.log(`Web server runing at port:${PORT}`);
