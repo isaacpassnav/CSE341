@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://cse341-project-w01.onrender.com/", 
+        url: "https://cse341-project-w01.onrender.com/",
       },
     ],
   },
@@ -25,3 +25,4 @@ function setupSwaggerDocs(app) {
 }
 
 module.exports = setupSwaggerDocs;
+
