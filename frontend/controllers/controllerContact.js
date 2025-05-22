@@ -1,5 +1,5 @@
 const person = require("../models/person");
-const Person = require("../models/person")
+// const Person = require("../models/person")
 
 const getAllContacts = async (req, res) => {
     try {
