@@ -1,12 +1,12 @@
-const person = require("../models/person");
-// const Person = require("../models/person")
+const Person = require("../models/person")
 
 const getAllContacts = async (req, res) => {
     try {
-        const people = await Person.find();
-        res.status(200).json(people)
+        const contact = await Person.find();
+        res.status(200).json(contact)
     } catch (err) {
-        res.status(500).json({message: "Error retrieving contacts", error: err});
+        console.error("Error retrieving contacts", err )
+        res.status(500).json({ message: "Error retrieving contacts", error: err.message });
     };
 }
 const getContactById = async (req, res) => {
@@ -17,7 +17,8 @@ const getContactById = async (req, res) => {
         }
         res.status(200).json(person);
     } catch (err) {
-        res.status(500).json({message: "Error retrieving contact", error: err});
+        console.error("Error retrieving contact by Id", err)
+        res.status(500).json({ message: "Error retrieving contact", error: err.message });
     };
 };
 // POST: Add a new contact
@@ -27,7 +28,8 @@ const createContact = async (req, res) => {
     await newPerson.save();
     res.status(201).json(newPerson);
   } catch (err) {
-    res.status(500).json({ message: "Error saving contact", error: err });
+    console.error("Error saving contact", err);
+    res.status(500).json({ message: "Error saving contact", error: err.message });
   }
 };
 //PUT: updateContact
@@ -42,22 +44,22 @@ const updateContact = async (req, res) => {
         }
         res.status(201).json(updateContact);
     } catch (err) {
-        res.status(500).json({message: err.message});
+        console.error("Error updating contact:", err); 
+        res.status(500).json({ message: "Error updating contact", error: err.message });
     }
 };
 //Delete: deleteContact
 const deleteContact = async (req, res) => {
     try {
         const contacId = req.params.id;
-        const deletedContact = await person.findByIdAndDelete(contacId, req.body,);
+        const deletedContact = await Person.findByIdAndDelete(contacId);
         if (!deletedContact) {
             return res.status(404).json({message: "Contact not found"});
         }
         res.status(200).json({message: "Contact deleted"});
     } catch (err) {
-        res.status(500).json({message: err.message});
+        console.error("Error deleting contact:", err); 
+        res.status(500).json({ message: "Error deleting contact", error: err.message });
     }
 }
-
-
 module.exports = { getContactById, getAllContacts, createContact, updateContact, deleteContact};
