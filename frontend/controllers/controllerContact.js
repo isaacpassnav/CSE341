@@ -34,8 +34,8 @@ const getContactById = async (req, res) => {
 // POST: Add a new contact
 const createContact = async (req, res) => {
   try {
-    const { professionalName, nameLink } = req.body;
-    if (!professionalName || !nameLink?.firstName || !nameLink?.url) {
+    const { firstName, lastName, email, favoriteColor, birthday, url } = req.body;
+    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 

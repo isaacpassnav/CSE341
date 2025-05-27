@@ -3,112 +3,76 @@ const mongoose = require("mongoose");
  * @swagger
  * components:
  *   schemas:
- *     Contact:
+ *     Person:
  *       type: object
  *       required:
- *         - professionalName
- *         - nameLink
+ *         - firstName
+ *         - lastName
+ *         - email
+ *         - favoriteColor
+ *         - birthday
  *       properties:
  *         _id:
  *           type: string
  *           description: MongoDB ObjectId
- *         professionalName:
+ *         firstName:
  *           type: string
- *         nameLink:
- *           type: object
- *           properties:
- *             firstName:
- *               type: string
- *             url:
- *               type: string
- *         linkedInLink:
- *           type: object
- *           properties:
- *             text:
- *               type: string
- *             link:
- *               type: string
- *         githubLink:
- *           type: object
- *           properties:
- *             text:
- *               type: string
- *             link:
- *               type: string
- *         base64Image:
+ *           example: Juan
+ *         lastName:
  *           type: string
- *         primaryDescription:
+ *           example: Pérez
+ *         email:
  *           type: string
- *         workDescription1:
+ *           example: juan.perez@example.com
+ *         favoriteColor:
  *           type: string
- *         workDescription2:
+ *           example: blue
+ *         birthday:
  *           type: string
- *         linkTitleText:
+ *           format: date
+ *           example: 1995-07-15
+ *         url:
  *           type: string
- *       example:
- *         _id: "68281cd4229dcbc8410e54b7"
- *         professionalName: "Juan Pérez"
- *         nameLink:
- *           firstName: "Juan"
- *           url: "https://portafolio.com/juanperez"
- *         linkedInLink:
- *           text: "LinkedIn"
- *           link: "https://linkedin.com/in/juanperez"
- *         githubLink:
- *           text: "My GitHub"
- *           link: "https://github.com/juanperez"
- *         base64Image: "iVBORw0KGgoAAAANSUhEUgAAAAUA..."
- *         primaryDescription: "Updated description for Juan Perez"
- *         workDescription1: "Experiencia en Node.js, Express, y bases de datos NoSQL."
- *         workDescription2: "Apasionado por resolver problemas y construir soluciones eficientes."
- *         linkTitleText: "Conecta conmigo:"
+ *           example: https://portafolio.com/juanperez
  */
+
 const personSchema = new mongoose.Schema({
-  professionalName: {
+  firstName: {
     type: String,
-    require: [true, "Profesional name is require"],
+    required: [true, "First name is required"],
     trim: true
   },
-  base64Image: String,
-  nameLink: {
-    firstName: {
-      type: String,
-      required: [true, "First name is required"],
-      trim: true
-    },
-    url: {
-      type: String,
-      required: [true, "URL is required"],
-      trim: true
-    },
-  },
-  primaryDescription: {
+  lastName: {
     type: String,
-    maxlength: [500, "Primary description must be under 500 characters"]
+    required: [true, "Last name is required"],
+    trim: true
   },
-  workDescription1: String,
-  workDescription2: String,
-  linkTitleText: String,
-  linkedInLink: {
-    text: String,
-    link: {
-      type: String,
-      validate: {
-        validator: (v) => /^https?:\/\/.+$/.test(v),
-        message: props => `${props.value} is not a valid LinkedIn URL`
-      }
-    },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    trim: true,
+    lowercase: true,
+    match: [/\S+@\S+\.\S+/, "Email is invalid"]
   },
-  githubLink: {
-    text: String,
-    link: {
-      type: String,
-      validate: {
-        validator: (v) => /^https?:\/\/.+$/.test(v),
-        message: props => `${props.value} is not a valid GitHub URL`
-      }
-    },
+  favoriteColor: {
+    type: String,
+    required: [true, "Favorite color is required"],
+    trim: true
   },
+  birthday: {
+    type: Date,
+    required: [true, "Birthday is required"]
+  },
+  url: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: function (v) {
+        return !v || /^https?:\/\/.+/.test(v); 
+      },
+      message: (props) => `${props.value} is not a valid URL`
+    }
+  }
 });
 
 module.exports = mongoose.model("Person", personSchema);
